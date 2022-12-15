@@ -1,6 +1,6 @@
 "use strict";
 const db = require("../database/databaseFunctions.js");
-module.exports = (app, express, http, path, conn) => {
+module.exports = (app, express, http, path, conn, rethinkdb) => {
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
     app.use(require("compression")());
@@ -15,8 +15,11 @@ module.exports = (app, express, http, path, conn) => {
         res.render("html/main.html", {});
     });
 
-    app.use("/api/response", require("../api/response.js")(express.Router(), db, conn));
-    app.use("/api/send", require("../api/send.js")(express.Router(), db, conn));
+    app.use("/api/response", require("../api/response.js")(express.Router(), db, conn, rethinkdb));
+    app.use("/api/question", require("../api/question.js")(express.Router(), db, conn, rethinkdb));
+    
+    app.use("/dashboard/register", require("../api/dashboard/register.js")(express.Router(), db, conn, rethinkdb));
+    app.use("/dashboard/register", require("../api/dashboard/login.js")(express.Router(), db, conn, rethinkdb));
     
     app.use("/images", express.static(path.join(__dirname, "../resources/images")));
     app.use("/bootstrap/css", express.static(path.join(__dirname, "../resources/bootstrap-5.2.2-dist/css")));

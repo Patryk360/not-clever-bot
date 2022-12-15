@@ -1,6 +1,6 @@
 {
   "name": "not-clever-bot",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "clever bot",
   "main": "app.js",
   "repository": "https://github.com/Patryk360/not-clever-bot.git",
@@ -12,6 +12,7 @@
     "ejs": "^3.1.8",
     "express": "^4.18.2",
     "helmet": "^6.0.0",
+    "mathjs": "^11.5.0",
     "rethinkdb": "^2.4.2"
   }
 }

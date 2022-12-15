@@ -1,7 +1,7 @@
 "use strict";
 module.exports = (app, db, conn) => {
     app.get("/", (req, res) => {
-        res.send("Hello World!");
+        res.send("ok");
     });
     return app;
 }
