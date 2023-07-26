@@ -1,10 +1,12 @@
 "use strict";
 const db = require("../database/databaseFunctions.js");
+const express = require("express");
 module.exports = (app, express, http, path, conn, rethinkdb) => {
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
     app.use(require("compression")());
     app.use(require("helmet")());
+    app.use(require("cookie-parser")());
     const server = http.createServer(app);
 
     app.engine(".html", require("ejs").__express);
@@ -19,12 +21,14 @@ module.exports = (app, express, http, path, conn, rethinkdb) => {
     app.use("/api/question", require("../api/question.js")(express.Router(), db, conn, rethinkdb));
     
     app.use("/dashboard/register", require("../api/dashboard/register.js")(express.Router(), db, conn, rethinkdb));
-    app.use("/dashboard/register", require("../api/dashboard/login.js")(express.Router(), db, conn, rethinkdb));
-    
+    app.use("/dashboard/login", require("../api/dashboard/login.js")(express.Router(), db, conn, rethinkdb));
+
+    app.use("/features", require("../api/dashboard/features.js")(express.Router(), db, conn, rethinkdb));
+
     app.use("/images", express.static(path.join(__dirname, "../resources/images")));
-    app.use("/bootstrap/css", express.static(path.join(__dirname, "../resources/bootstrap-5.2.2-dist/css")));
-    app.use("/bootstrap/js", express.static(path.join(__dirname, "../resources/bootstrap-5.2.2-dist/js")));
-    app.use("/jquery", express.static(path.join(__dirname, "../resources/jquery-3.6.0")));
+    app.use("/bootstrap/css", express.static(path.join(__dirname, "../resources/bootstrap-5.3.1-dist/css")));
+    app.use("/bootstrap/js", express.static(path.join(__dirname, "../resources/bootstrap-5.3.1-dist/js")));
+    app.use("/jquery", express.static(path.join(__dirname, "../resources/jquery/jquery-3.7.0.min.js")));
     app.use("/css", express.static(path.join(__dirname, "../api/css")));
     app.use("/js", express.static(path.join(__dirname, "../api/js")));
 

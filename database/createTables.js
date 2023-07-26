@@ -3,7 +3,11 @@ module.exports = {
     createTables: async (rethinkdb, conn) => {
         const tableList = await rethinkdb.tableList().run(conn);
         const tableArray = [
-            { name: "Data", primaryKey: "id", index: false }
+            { name: "Data", primaryKey: "id", index: false },
+            { name: "Users", primaryKey: "name", index: [
+                    { name: "apikey", multi: false },
+                ]
+            }
         ];
         if (tableList.length < tableArray.length) console.log("Creating a table in the database...");
         for (const table of tableArray) {
@@ -20,7 +24,6 @@ module.exports = {
                         if (index.multi) {
                             await rethinkdb.table(table.name).indexCreate(index.name, index.array).run(conn);
                             await rethinkdb.table(table.name).indexWait().run(conn);
-                            continue;
                         } else if (!index.multi) {
                             await rethinkdb.table(table.name).indexCreate(index.name).run(conn);
                             await rethinkdb.table(table.name).indexWait().run(conn);

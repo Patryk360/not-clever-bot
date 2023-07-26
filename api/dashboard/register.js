@@ -1,15 +1,12 @@
 "use strict";
 module.exports = (app, db, conn) => {
     app.get("/", (req, res) => {
-        const token = (Date.now() + Math.floor((Math.random() * 50) + 1)+Math.floor((Math.random() * 30) + 1))+(Date.now() - Math.floor((Math.random() * 100000) + 1)+Math.floor((Math.random() * 500) + 1)).toString(32);
-        const data = {
-            token: token,
-            username: req.body.username??null,
-            password: req.body.password??null,
-            email: req.body.email??null,
-            created: Date.now()
-        }
-        res.send(data);
+        res.render("html/register.html", {});
+    });
+
+    app.post("/", async (req, res) => {
+        console.log(req.body);
+        setTimeout(() => { res.send("done"); }, 2000);
     });
     return app;
 }
