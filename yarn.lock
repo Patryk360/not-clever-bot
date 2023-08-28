@@ -390,10 +390,10 @@ javascript-natural-sort@^0.7.1:
   resolved "https://registry.yarnpkg.com/javascript-natural-sort/-/javascript-natural-sort-0.7.1.tgz#f9e2303d4507f6d74355a73664d1440fb5a0ef59"
   integrity sha512-nO6jcEfZWQXDhOiBtG2KvKyEptz7RVbpGP4vTD2hLBdmNQSsCiicO2Ioinv6UI4y9ukqnBpy+XZ9H6uLNgJTlw==
 
-mathjs@^11.9.1:
-  version "11.9.1"
-  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-11.9.1.tgz#b3bb1f710f63b2f0e504df3abaf6b38bbf92f653"
-  integrity sha512-VdB9ELZ6Dwda13j5d1eCBETmPO8m9qIJETUdfZmTA9cPnXUiIk7UuoAmvxFqtfAe32XYuRugAec2Ndv0/RfRhg==
+mathjs@^11.10.0:
+  version "11.10.0"
+  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-11.10.0.tgz#2fd6e79c630859699b5a35a0e85ec86d3b5f98b3"
+  integrity sha512-PXzIHU+36OUCTJVkc6dwMB2MFMRykxcN9y+EnIhy/HUAIGYQMKEpDJrEjdLb7kCi1JSarmbZqNSpKFGxpZhWzw==
   dependencies:
     "@babel/runtime" "^7.22.6"
     complex.js "^2.1.1"
