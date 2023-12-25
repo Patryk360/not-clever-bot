@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@babel/runtime@^7.23.5":
-  version "7.23.5"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.5.tgz#11edb98f8aeec529b82b211028177679144242db"
-  integrity sha512-NdUTHcPe4C99WxPub+K9l9tK5/lV4UXIoaHSYgzco9BCyjKAAwzdBI+wWtYqHt7LJdbo74ZjRPJgzVweq1sz0w==
+"@babel/runtime@^7.23.6":
+  version "7.23.6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.6.tgz#c05e610dc228855dc92ef1b53d07389ed8ab521d"
+  integrity sha512-zHd0eUrf5GZoOWVCXp6koAKQTfZV07eit6bGPmJgnZdnSAvvZee6zniW2XMF7Cmc4ISOOnPy3QaSiIJGJkVEDQ==
   dependencies:
     regenerator-runtime "^0.14.0"
 
@@ -390,12 +390,12 @@ javascript-natural-sort@^0.7.1:
   resolved "https://registry.yarnpkg.com/javascript-natural-sort/-/javascript-natural-sort-0.7.1.tgz#f9e2303d4507f6d74355a73664d1440fb5a0ef59"
   integrity sha512-nO6jcEfZWQXDhOiBtG2KvKyEptz7RVbpGP4vTD2hLBdmNQSsCiicO2Ioinv6UI4y9ukqnBpy+XZ9H6uLNgJTlw==
 
-mathjs@^12.2.0:
-  version "12.2.0"
-  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-12.2.0.tgz#d2f95adaeeabf2d420d569f9b0f34457a7e60fc5"
-  integrity sha512-lEoZ3OtOno1dxta5xHnPOwPI+z94/+NX70JwaJynHosKdq10wJ4InYadxXaHM19ALr/UZbmTixFS7F4ufJnazg==
+mathjs@^12.2.1:
+  version "12.2.1"
+  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-12.2.1.tgz#9d2efdd2279f94d652559d0ec33ef809aad76c7f"
+  integrity sha512-/uG/yMP0wUSfALCyJkKco0gYlrp0kHFt4yNT3E+ZCoiWpsT9GdtLqydxHp3gjDCQrR4GGBDXMnKOQtJbmIe9SQ==
   dependencies:
-    "@babel/runtime" "^7.23.5"
+    "@babel/runtime" "^7.23.6"
     complex.js "^2.1.1"
     decimal.js "^10.4.3"
     escape-latex "^1.2.0"
