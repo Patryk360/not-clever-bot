@@ -1,0 +1,20 @@
+{
+  "name": "not-clever-bot",
+  "version": "0.0.4",
+  "description": "clever bot",
+  "main": "app.js",
+  "repository": "https://github.com/Patryk360/not-clever-bot.git",
+  "author": "Patryk360 <nexigamingyt@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "compression": "^1.8.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "mathjs": "^14.3.1",
+    "rethinkdb": "^2.4.2"
+  },
+  "packageManager": "yarn@4.7.0"
+}
