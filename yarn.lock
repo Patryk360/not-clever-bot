@@ -5,12 +5,10 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"@babel/runtime@npm:^7.25.7":
-  version: 7.26.9
-  resolution: "@babel/runtime@npm:7.26.9"
-  dependencies:
-    regenerator-runtime: "npm:^0.14.0"
-  checksum: 10c0/e8517131110a6ec3a7360881438b85060e49824e007f4a64b5dfa9192cf2bb5c01e84bfc109f02d822c7edb0db926928dd6b991e3ee460b483fb0fac43152d9b
+"@babel/runtime@npm:^7.26.10":
+  version: 7.27.1
+  resolution: "@babel/runtime@npm:7.27.1"
+  checksum: 10c0/530a7332f86ac5a7442250456823a930906911d895c0b743bf1852efc88a20a016ed4cd26d442d0ca40ae6d5448111e02a08dd638a4f1064b47d080e2875dc05
   languageName: node
   linkType: hard
 
@@ -589,11 +587,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mathjs@npm:^14.3.1":
-  version: 14.3.1
-  resolution: "mathjs@npm:14.3.1"
+"mathjs@npm:^14.5.0":
+  version: 14.5.0
+  resolution: "mathjs@npm:14.5.0"
   dependencies:
-    "@babel/runtime": "npm:^7.25.7"
+    "@babel/runtime": "npm:^7.26.10"
     complex.js: "npm:^2.2.5"
     decimal.js: "npm:^10.4.3"
     escape-latex: "npm:^1.2.0"
@@ -604,7 +602,7 @@ __metadata:
     typed-function: "npm:^4.2.1"
   bin:
     mathjs: bin/cli.js
-  checksum: 10c0/6c97656b8e0f4321fad20c9301b28ee8b1ff66c3a7c2e7734e6b5e2df327e79fc0bdc2805cf51844d0ecbff151368ab3ce1eb2cd99826e5777eef61d67432ba9
+  checksum: 10c0/834693602ebff64d2b2362b214f5ac45cd02c2eefa4c7017babeabf615ac0ded7cf021f2343b5daf08b54a501172d401659788d322cb43d8b7069cfa54fd2b93
   languageName: node
   linkType: hard
 
@@ -710,7 +708,7 @@ __metadata:
     ejs: "npm:^3.1.10"
     express: "npm:^4.21.2"
     helmet: "npm:^8.0.0"
-    mathjs: "npm:^14.3.1"
+    mathjs: "npm:^14.5.0"
     rethinkdb: "npm:^2.4.2"
   languageName: unknown
   linkType: soft
@@ -787,13 +785,6 @@ __metadata:
     iconv-lite: "npm:0.4.24"
     unpipe: "npm:1.0.0"
   checksum: 10c0/b201c4b66049369a60e766318caff5cb3cc5a900efd89bdac431463822d976ad0670912c931fdbdcf5543207daf6f6833bca57aa116e1661d2ea91e12ca692c4
-  languageName: node
-  linkType: hard
-
-"regenerator-runtime@npm:^0.14.0":
-  version: 0.14.1
-  resolution: "regenerator-runtime@npm:0.14.1"
-  checksum: 10c0/1b16eb2c4bceb1665c89de70dcb64126a22bc8eb958feef3cd68fe11ac6d2a4899b5cd1b80b0774c7c03591dc57d16631a7f69d2daa2ec98100e2f29f7ec4cc4
   languageName: node
   linkType: hard
 
