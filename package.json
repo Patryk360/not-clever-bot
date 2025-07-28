@@ -13,7 +13,7 @@
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "helmet": "^8.0.0",
-    "mathjs": "^14.3.1",
+    "mathjs": "^14.6.0",
     "rethinkdb": "^2.4.2"
   },
   "packageManager": "yarn@4.7.0"
