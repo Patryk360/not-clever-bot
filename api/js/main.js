@@ -31,7 +31,7 @@ async function sendMessage() {
   if (sendBtn) sendBtn.disabled = true;
 
   try {
-    const response = await fetch(`/api/response?sentence=${encodeURIComponent(text)}`);
+    const response = await fetch(`/api/response?sentence=${encodeURIComponent(text)}&key=TEST`);
     
     if (!response.ok) throw new Error("Problem z odpowiedzią serwera");
 
