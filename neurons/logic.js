@@ -1,82 +1,174 @@
 const { evaluate } = require('mathjs');
 const axios = require('axios');
+const stringSimilarity = require('string-similarity');
 
 module.exports = {
-    solverLogic: async (sentesence, resE, db, conn, rethinkdb) => {
-        const text = sentesence.toLowerCase().trim();
-        const originalText = sentesence.trim();
+    solverLogic: async (sentence, apiKey, textEmotionScore, db, conn, rethinkdb) => {
+        const text = sentence.toLowerCase().trim();
+        const originalText = sentence.trim();
 
-        const getEmotionText = (level) => {
-            const lvl = parseInt(level);
-            if (lvl > 2) return "bardzo radosna";
-            if (lvl > 0) return "pozytywna";
-            if (lvl < -2) return "bardzo smutna lub zdenerwowana";
-            if (lvl < 0) return "nieco przygnębiona";
-            return "neutralna";
-        };
+        let session = { emotion: 0, last_response: "", history: [], last_topic: "" };
+        try {
+            const cursor = await rethinkdb.table("Sessions").getAll(apiKey, {index: "apiKey"}).run(conn);
+            const sessions = await cursor.toArray();
+            if (sessions.length > 0) {
+                session = sessions[0];
+                if (!session.history) session.history = [];
+                if (!session.last_topic) session.last_topic = "";
+            } else {
+                const insertRes = await db.insert(rethinkdb, conn, "Sessions", { 
+                    apiKey: apiKey, emotion: 0, last_response: "", history: [], last_topic: ""
+                });
+                session.id = insertRes.generated_keys[0];
+            }
+        } catch (e) { console.error("Błąd pobierania sesji:", e); }
 
-        const emotionDesc = getEmotionText(resE);
+        let rawAnswer = "";
 
-        const mathPattern = /([0-9+\-*/^().,! ]|sin|cos|tan|sqrt|log|pi|e)+/gi;
-        
-        if (/[0-9]/.test(text) && /[+\-*/^()]|sqrt|sin|cos/.test(text)) {
+        if (text.startsWith("!")) {
+            if (text === "!reset") {
+                session.emotion = 0;
+                session.history = [];
+                session.last_topic = "";
+                rawAnswer = "Zresetowałem swój nastrój i zapomniałem o czym rozmawialiśmy. Zaczynamy od zera!";
+            } 
+            else if (text === "!stats") {
+                const count = await rethinkdb.table("Knowledge").count().run(conn);
+                rawAnswer = `W mojej bazie wiedzy znajduje się obecnie ${count} wyuczonych odpowiedzi. Mój nastrój wobec Ciebie to: ${session.emotion}.`;
+            }
+            else {
+                rawAnswer = "Nieznana komenda systemowa. Dostępne to: !reset, !stats.";
+            }
+        }
+
+        if (!rawAnswer) {
+            session.emotion += textEmotionScore;
+            const negativeWords = ['głupi', 'zły', 'nienawidzę', 'spadaj', 'nudny', 'źle'];
+            const positiveWords = ['super', 'fajnie', 'dobrze', 'dzięki', 'kocham', 'świetnie', 'mądry'];
+
+            for (const word of negativeWords) { if (text.includes(word)) session.emotion -= 2; }
+            for (const word of positiveWords) { if (text.includes(word)) session.emotion += 2; }
+
+            if (session.emotion < -5) session.emotion = -5;
+            if (session.emotion > 5) session.emotion = 5;
+        }
+
+        if (!rawAnswer && session.last_response.includes("Nie wiem jak odpowiedzieć na:")) {
+            const match = session.last_response.match(/Nie wiem jak odpowiedzieć na: "(.*?)"/);
+            if (match && match[1]) {
+                const questionToLearn = match[1].toLowerCase();
+                try {
+                    await db.insert(rethinkdb, conn, "Knowledge", { 
+                        question: questionToLearn, answer: originalText, learnedEmotion: session.emotion 
+                    });
+                    rawAnswer = `Dzięki! Będę to mówił w nastroju na poziomie: ${session.emotion}.`;
+                } catch (e) { console.error("Błąd zapisu wyuczonej wiedzy:", e); }
+            }
+        }
+
+        if (!rawAnswer) {
+            if (text.includes("która godzina") || text.includes("jaki czas")) {
+                const now = new Date();
+                rawAnswer = `Teraz jest ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}.`;
+            }
+            
+            const weatherMatch = text.match(/pogoda w ([\wąćęłńóśźż]+)/);
+            if (weatherMatch) {
+                try {
+                    const city = weatherMatch[1];
+                    const wRes = await axios.get(`https://wttr.in/${encodeURIComponent(city)}?format=3`);
+                    rawAnswer = `Proszę bardzo: ${wRes.data}`;
+                } catch(e) {
+                    rawAnswer = "Nie mogłem połączyć się z satelitą pogodowym.";
+                }
+            }
+        }
+
+        if (!rawAnswer) {
             try {
-                const potentialMath = text.match(mathPattern);
+                const cursor = await rethinkdb.table("Knowledge").run(conn);
+                const allKnowledge = await cursor.toArray();
+                
+                const validKnowledge = allKnowledge.filter(k => k && typeof k.question === 'string');
+
+                if (validKnowledge.length > 0) {
+                    const questions = validKnowledge.map(k => k.question.toLowerCase());
+                    const matches = stringSimilarity.findBestMatch(text, questions);
+                    
+                    if (matches.bestMatch.rating > 0.65) { 
+                        const matchedQuestion = matches.bestMatch.target;
+                        const possibleAnswers = validKnowledge.filter(k => k.question.toLowerCase() === matchedQuestion);
+                        
+                        possibleAnswers.sort((a, b) => Math.abs((a.learnedEmotion || 0) - session.emotion) - Math.abs((b.learnedEmotion || 0) - session.emotion));
+                        if (possibleAnswers.length > 0) rawAnswer = possibleAnswers[0].answer;
+                    }
+                }
+            } catch (e) { console.error("Błąd dopasowania Bazy Wiedzy:", e); }
+        }
+
+        if (!rawAnswer && /[0-9]/.test(text) && /[+\-*/^()]|sqrt|sin|cos|log/.test(text)) {
+            try {
+                const allowedMathWords = ['sin', 'cos', 'tan', 'sqrt', 'log', 'pi', 'e'];
+
+                const cleanText = text.replace(/[a-ząćęłńóśźż]+/gi, (word) => {
+                    return allowedMathWords.includes(word) ? word : '';
+                });
+
+                const mathPattern = /([0-9+\-*/^().,! ]|sin|cos|tan|sqrt|log|pi|e)+/gi;
+                const potentialMath = cleanText.match(mathPattern);
+                
                 if (potentialMath) {
                     const expression = potentialMath.join('').trim();
                     const result = evaluate(expression);
-
+                    
                     if (result !== undefined && typeof result !== 'function') {
-                        return `Po moich skomplikowanych obliczeniach wyszło: ${result}. (Moja emocja: ${emotionDesc})`;
+                        rawAnswer = `Wynik to: ${result}`;
                     }
                 }
-            } catch (error) {
-                console.log("To nie matematyka, szukam w bazie...");
+            } catch (err) {
+                console.error("Błąd podczas obliczeń matematycznych:", err);
             }
         }
+        if (!rawAnswer) {
+            try {
+                let query = originalText.replace(/(co to jest|kto to jest|wyjaśnij|czym są|opowiedz o|definicja)/gi, "").trim();
+                if (/(on|ona|ono|jego|jej)/i.test(query) && session.last_topic && session.last_topic !== "") {
+                    query = session.last_topic; 
+                }
 
-        try {
-            const lastLogCursor = await rethinkdb.table("Data").orderBy(rethinkdb.desc("timestamp")).limit(1).run(conn);
-            const lastLogArray = await lastLogCursor.toArray();
-
-            if (lastLogArray.length > 0) {
-                const lastInteraction = lastLogArray[0];
-                if (lastInteraction.bot_response && lastInteraction.bot_response.includes("Nie wiem jak odpowiedzieć na:")) {
-                    const match = lastInteraction.bot_response.match(/Nie wiem jak odpowiedzieć na: "(.*?)"/);
-                    if (match && match[1]) {
-                        const questionToLearn = match[1];
-                        const newAnswer = originalText;
-                        await db.insert(rethinkdb, conn, "Knowledge", { 
-                            question: questionToLearn, 
-                            answer: newAnswer 
-                        });
-                        return `Dzięki! Zapamiętałem, że na "${questionToLearn}" mam odpowiadać "${newAnswer}". (Czuję się teraz ${emotionDesc})`;
+                if (query.length > 2) {
+                    const url = `https://pl.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
+                    const response = await axios.get(url, { headers: { 'User-Agent': 'NotCleverBot/3.0' } });
+                    if (response.data && response.data.extract) {
+                        rawAnswer = `Z Wikipedii: ${response.data.extract}`;
+                        session.last_topic = query; 
                     }
                 }
-            }
-        } catch (err) {
-            console.error("Błąd podczas auto-nauki:", err);
+            } catch (error) {}
         }
 
-        try {
-            const cursor = await rethinkdb.table("Knowledge").filter({ question: text }).run(conn);
-            const responses = await cursor.toArray();
-            if (responses.length > 0) {
-                const answer = responses[Math.floor(Math.random() * responses.length)].answer;
-                return `${answer} (Moja emocja: ${emotionDesc})`;
-            }
-        } catch (e) {}
+        if (!rawAnswer) {
+            rawAnswer = `Nie wiem jak odpowiedzieć na: "${originalText}". Co mam na to mówić?`;
+        }
+
+        let finalResponse = rawAnswer;
+        if (!text.startsWith("!") && !rawAnswer.includes("Nie wiem jak")) {
+            if (session.emotion <= -3) finalResponse = `Ech, niech ci będzie... ${rawAnswer}`;
+            else if (session.emotion >= 3) finalResponse = `Jasne! ${rawAnswer} 😊`;
+        }
+
+        session.history.push(originalText);
+        if (session.history.length > 5) session.history.shift(); 
 
         try {
-            const url = `https://pl.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(originalText)}`;
-            const response = await axios.get(url, {
-                headers: { 'User-Agent': 'MojWlasnyBot/1.0 (Testowanie API)' }
-            });
-            if (response.data && response.data.extract) {
-                return `Znalazłem w sieci: ${response.data.extract} (Moja emocja: ${emotionDesc})`;
-            }
-        } catch (error) {}
+            await rethinkdb.table("Sessions").get(session.id).update({
+                emotion: session.emotion,
+                last_response: finalResponse,
+                history: session.history,
+                last_topic: session.last_topic || ""
+            }).run(conn);
+        } catch (e) { console.error("Błąd aktualizacji sesji na samym dole:", e); }
 
-        return `Nie wiem jak odpowiedzieć na: "${text}". Co powinienem powiedzieć? (Aktualnie moja emocja jest ${emotionDesc})`;
+        return finalResponse;
     }
 }

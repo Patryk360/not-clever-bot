@@ -1,5 +1,6 @@
 "use strict";
 const db = require("../database/databaseFunctions.js");
+const rateLimit = require('express-rate-limit');
 module.exports = (app, express, http, path, conn, rethinkdb) => {
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
@@ -23,6 +24,14 @@ module.exports = (app, express, http, path, conn, rethinkdb) => {
     }));
     app.use(require("cookie-parser")());
     app.use(require("compression")());
+    const apiLimiter = rateLimit({
+        windowMs: 10 * 1000,
+        max: 10,
+        message: "Zbyt wiele zapytań. Zwolnij trochę!"
+    });
+
+    app.use('/api/', apiLimiter);
+
     const server = http.createServer(app);
 
     app.engine(".html", require("ejs").__express);

@@ -13,7 +13,7 @@ module.exports = (app, db, conn, rethinkdb) => {
         }
         
         try {
-            const botResponse = await solver(userText, db, conn, rethinkdb);
+            const botResponse = await solver(userText, req.query.key, db, conn, rethinkdb);
             
             await db.insert(rethinkdb, conn, "Data", {
                 user_message: userText,
