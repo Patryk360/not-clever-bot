@@ -17,16 +17,21 @@ module.exports = {
 
         const emotionDesc = getEmotionText(resE);
 
-        const mathMatch = text.match(/\d+\s*[\+\-\*\/]\s*\d+/);
-        if (mathMatch) {
+        const mathPattern = /([0-9+\-*/^().,! ]|sin|cos|tan|sqrt|log|pi|e)+/gi;
+        
+        if (/[0-9]/.test(text) && /[+\-*/^()]|sqrt|sin|cos/.test(text)) {
             try {
-                const expression = mathMatch[0];
-                const result = evaluate(expression);
-                if (result !== undefined) {
-                    return `Wynik to: ${result}. (Moja emocja jest teraz ${emotionDesc})`;
+                const potentialMath = text.match(mathPattern);
+                if (potentialMath) {
+                    const expression = potentialMath.join('').trim();
+                    const result = evaluate(expression);
+
+                    if (result !== undefined && typeof result !== 'function') {
+                        return `Po moich skomplikowanych obliczeniach wyszło: ${result}. (Moja emocja: ${emotionDesc})`;
+                    }
                 }
             } catch (error) {
-                console.error("Błąd obliczeń:", error.message);
+                console.log("To nie matematyka, szukam w bazie...");
             }
         }
 

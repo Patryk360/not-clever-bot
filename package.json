@@ -1,6 +1,6 @@
 {
   "name": "not-clever-bot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "clever bot",
   "main": "app.js",
   "repository": "https://github.com/Patryk360/not-clever-bot.git",
@@ -17,7 +17,8 @@
     "helmet": "^8.1.0",
     "mathjs": "^15.1.1",
     "nodemailer": "^8.0.1",
-    "rethinkdb": "^2.4.2"
+    "rethinkdb": "^2.4.2",
+    "string-similarity": "^4.0.4"
   },
   "packageManager": "yarn@4.12.0"
 }
