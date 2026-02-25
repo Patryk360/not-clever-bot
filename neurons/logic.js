@@ -76,10 +76,18 @@ module.exports = {
             if (weatherMatch) {
                 try {
                     const city = weatherMatch[1];
-                    const wRes = await axios.get(`https://wttr.in/${encodeURIComponent(city)}?format=3`);
-                    rawAnswer = `Proszę bardzo: ${wRes.data}`;
+                    
+                    const weatherApiKey = "4deb9dcf70035bbbc4d319e3d3ed6034";
+                    const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&lang=pl&appid=${weatherApiKey}`;
+                    
+                    const wRes = await axios.get(url);
+                    const temp = Math.round(wRes.data.main.temp);
+                    const desc = wRes.data.weather[0].description;
+                    
+                    rawAnswer = `W mieście ${city} jest teraz ${temp}°C i ${desc}.`;
                 } catch(e) {
-                    rawAnswer = "Nie mogłem połączyć się z satelitą pogodowym.";
+                    console.error("Błąd pogody:", e.message);
+                    rawAnswer = "Nie mogłem sprawdzić pogody. Być może miasto nie istnieje lub satelita ma awarię.";
                 }
             }
         }
