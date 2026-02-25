@@ -7,7 +7,8 @@ module.exports = {
             { name: "Users", primaryKey: "name", index: [
                     { name: "apikey", multi: false },
                 ]
-            }
+            },
+            { name: "Knowledge", primaryKey: "id", index: false }
         ];
         if (tableList.length < tableArray.length) console.log("Creating a table in the database...");
         for (const table of tableArray) {

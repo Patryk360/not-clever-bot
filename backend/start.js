@@ -1,12 +1,28 @@
 "use strict";
 const db = require("../database/databaseFunctions.js");
-const express = require("express");
 module.exports = (app, express, http, path, conn, rethinkdb) => {
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
     app.use(require("compression")());
-    app.use(require("helmet")());
+    app.use(require("helmet")({
+        contentSecurityPolicy: false,
+        crossOriginEmbedderPolicy: false,
+        crossOriginOpenerPolicy: false,
+        crossOriginResourcePolicy: false,
+        dnsPrefetchControl: false,
+        expectCt: false,
+        frameguard: false,
+        hidePoweredBy: false,
+        hsts: false,
+        ieNoOpen: false,
+        noSniff: false,
+        originAgentCluster: false,
+        permittedCrossDomainPolicies: false,
+        referrerPolicy: false,
+        xssFilter: false
+    }));
     app.use(require("cookie-parser")());
+    app.use(require("compression")());
     const server = http.createServer(app);
 
     app.engine(".html", require("ejs").__express);
@@ -18,7 +34,6 @@ module.exports = (app, express, http, path, conn, rethinkdb) => {
     });
 
     app.use("/api/response", require("../api/response.js")(express.Router(), db, conn, rethinkdb));
-    app.use("/api/question", require("../api/question.js")(express.Router(), db, conn, rethinkdb));
     
     app.use("/dashboard/register", require("../api/dashboard/register.js")(express.Router(), db, conn, rethinkdb));
     app.use("/dashboard/login", require("../api/dashboard/login.js")(express.Router(), db, conn, rethinkdb));

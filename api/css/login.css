@@ -1,0 +1,20 @@
+body {
+  background-color: #f0f8ff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.login-card {
+  background-color: white;
+  border: none;
+  border-radius: 15px;
+  padding: 40px 30px;
+  box-shadow: 0 10px 30px rgba(0, 123, 255, 0.1);
+}
+
+.form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+}

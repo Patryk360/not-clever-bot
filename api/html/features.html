@@ -1,19 +1,99 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" class="h-100">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link rel="icon" type="image/x-icon" href="/images/edward.png">
-        <title>Main page</title>
+        <title>Dokumentacja - CleverBot API</title>
     </head>
-    <body>
-    <%- include('partials/navbar.html', { }); %>
-    Info...
-    <%- include('partials/footer.html', {  }); %>
+    <body class="d-flex flex-column h-100 bg-light">
+        <%- include('partials/navbar.html', { }); %>
 
-    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/jquery"></script>
-    <script src="/js/main.js"></script>
+        <div class="container flex-grow-1 py-5">
+            <div class="text-center mb-5">
+                <h1 class="text-primary fw-bold">Możliwości i Dokumentacja</h1>
+                <p class="text-muted lead">Dowiedz się, jak komunikować się z naszym botem za pomocą prostych zapytań HTTP GET.</p>
+            </div>
+            
+            <div class="row g-4 mb-5 row-cols-1 row-cols-lg-3">
+                <div class="col">
+                    <div class="d-flex align-items-center text-center flex-column p-4 bg-white rounded-4 shadow-sm h-100 border border-light">
+                        <div class="fs-1 mb-3">🧠</div>
+                        <h3 class="fw-bold text-dark">Auto-Nauka</h3>
+                        <p class="text-muted mt-2">Bot uczy się w locie. Jeśli czegoś nie wie, dopyta Cię o odpowiedź i zapisze ją w bazie danych.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="d-flex align-items-center text-center flex-column p-4 bg-white rounded-4 shadow-sm h-100 border border-light">
+                        <div class="fs-1 mb-3">🧮</div>
+                        <h3 class="fw-bold text-dark">Obliczenia</h3>
+                        <p class="text-muted mt-2">Wysyłaj działania matematyczne (np. 5+5), a bot zwróci gotowy wynik dzięki bibliotece Math.js.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="d-flex align-items-center text-center flex-column p-4 bg-white rounded-4 shadow-sm h-100 border border-light">
+                        <div class="fs-1 mb-3">🌐</div>
+                        <h3 class="fw-bold text-dark">Wiedza Świata</h3>
+                        <p class="text-muted mt-2">Gdy brakuje wiedzy lokalnej, bot automatycznie przeszuka polską Wikipedię w poszukiwaniu definicji.</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-5 opacity-25">
+
+            <div class="bg-white p-5 rounded-4 shadow-sm border border-light">
+                <h2 class="text-primary fw-bold mb-4 text-center">Jak wysyłać zapytania?</h2>
+                <p class="text-center text-muted mb-5">Nasz bot przyjmuje zapytania za pomocą parametru <code>sentence</code> w adresie URL.</p>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3 border">
+                            <h5 class="fw-bold">💬 Zwykła rozmowa</h5>
+                            <code class="d-block bg-dark text-info p-2 rounded mt-2">
+                                /api/response?sentence=Cześć co tam?&key=TEST
+                            </code>
+                            <small class="text-muted d-block mt-2">Bot sprawdzi bazę wiedzy i odpowie naturalnie.</small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3 border">
+                            <h5 class="fw-bold">🧮 Matematyka</h5>
+                            <code class="d-block bg-dark text-info p-2 rounded mt-2">
+                                /api/response?sentence=Ile to 10*5?&key=TEST
+                            </code>
+                            <small class="text-muted d-block mt-2">Zwróci wynik: 50 (pamiętaj o kodowaniu znaku + jako %2B).</small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3 border">
+                            <h5 class="fw-bold">🌐 Szukanie informacji</h5>
+                            <code class="d-block bg-dark text-info p-2 rounded mt-2">
+                                /api/response?sentence=Polska&key=TEST
+                            </code>
+                            <small class="text-muted d-block mt-2">Bot pobierze wstęp z Wikipedii na temat podanego hasła.</small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3 border">
+                            <h5 class="fw-bold">✍️ Uczenie bota</h5>
+                            <code class="d-block bg-dark text-info p-2 rounded mt-2">
+                                /api/response?sentence=Moja odpowiedź&key=TEST
+                            </code>
+                            <small class="text-muted d-block mt-2">Wyślij odpowiedź zaraz po tym, jak bot zapyta "Co powinienem odpowiedzieć?".</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('partials/footer.html', {  }); %>
+
+        <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/jquery"></script>
+        <script src="/js/main.js"></script>
     </body>
 </html>

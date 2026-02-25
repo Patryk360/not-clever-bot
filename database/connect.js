@@ -1,5 +1,5 @@
 "use strict";
-require("dotenv").config();
+require("dotenv").config({ quiet: true });
 module.exports = {
     connect: async (rethinkdb) => {
         const connection = await rethinkdb.connect({

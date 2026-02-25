@@ -1,7 +1,11 @@
 "use strict";
 $(document).ready(() => {
     $("#login").click(() => {
-        $.post("/dashboard/login", "oka").done(() => {
+        const data = {
+            username: $("#username").val(),
+            password: $("#password").val()
+        };
+        $.post("/dashboard/login", data).done(() => {
             console.log("okej");
         });
     });

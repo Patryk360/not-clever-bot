@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl" class="h-100">
 <head>
     <meta charset="utf-8">
-    <title>API</title>
-    <link rel="stylesheet" href="css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <title>500 - Błąd Serwera</title>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>API</h1>
+<body class="h-100 d-flex align-items-center justify-content-center" style="background-color: #f0f8ff;">
+    <div class="text-center p-5 bg-white shadow border-top border-danger border-5 rounded-4" style="max-width: 600px;">
+        <h1 class="display-1 fw-bold text-danger">500</h1>
+        <h2 class="mb-3 text-dark">Wewnętrzny Błąd Serwera</h2>
+        <p class="text-muted">Nasz bot potknął się o własne kable. Pracujemy nad tym!</p>
+        <div class="alert alert-danger text-start mt-4" role="alert" style="word-wrap: break-word; font-family: monospace;">
+            <strong>Błąd pod adresem:</strong> <%= err ? err.url : 'Brak danych' %><br><br>
+            <%= err ? err.code : 'Brak szczegółów błędu.' %>
         </div>
-        <div class="content">
-            <h2>API</h2>
-            <p>500</p>
-        </div>
+        <a href="/" class="btn btn-outline-danger rounded-pill px-4 mt-2">Wróć na główną</a>
     </div>
 </body>
 </html>
