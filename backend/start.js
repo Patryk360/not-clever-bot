@@ -64,7 +64,7 @@ module.exports = (app, express, http, path, conn, rethinkdb) => {
         });
     });
 
-    const listener = server.listen(process.env.PORT || 8088, () => {
+    const listener = server.listen(process.env.PORT || 7070, () => {
         console.log("Panel uruchomiony na porcie " + listener.address().port);
     });
 }
