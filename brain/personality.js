@@ -1,6 +1,6 @@
 module.exports = {
     handleMemory: (rawText, session) => {
-        const nameMatch = rawText.match(/(nazywam się|jestem) ([a-ząćęłńóśźż]+)/i);
+        const nameMatch = rawText.match(/(na imię mam|jestem) ([a-ząćęłńóśźż]+)/i);
         if (nameMatch && !rawText.includes("kim")) {
             const imie = nameMatch[2].charAt(0).toUpperCase() + nameMatch[2].slice(1);
             session.memory.name = imie;
