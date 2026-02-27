@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotCleverBot - Dokumentacja</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="/css/docs.css" rel="stylesheet">
+</head>
+<body>
+    <%- include('partials/navbar.html', { }); %>
+
+    <div class="container container-custom py-5">
+        
+        <header class="text-center mb-5">
+            <h1 class="text-primary fw-bold display-5">NotCleverBot</h1>
+            <p class="lead text-muted">Oficjalna dokumentacja i instrukcja obsługi inteligentnego chatbota.</p>
+        </header>
+
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="text-primary border-bottom pb-2 mb-4">Wprowadzenie</h2>
+                <p><strong>NotCleverBot</strong> to unikalny chatbot, który uczy się na bieżąco podczas rozmowy z Tobą. Zamiast korzystać z gotowych, sztywnych regułek, bot przyswaja wiedzę od użytkowników, odczuwa wirtualne emocje i posiada własną osobowość.</p>
+                
+                <h4 class="mt-4 text-dark fw-semibold">🧠 Jak bot się uczy?</h4>
+                <p>Jeśli zadasz botowi pytanie, na które nie zna odpowiedzi, szczerze Ci o tym powie, pytając: <em class="text-muted">"Nie wiem jak odpowiedzieć na to pytanie. Co mam na to mówić?"</em>.</p>
+                <p>To, co napiszesz mu w kolejnej wiadomości, zostanie trwale zapamiętane w jego bazie danych! Jeśli zmienisz zdanie i nie chcesz go uczyć, po prostu napisz <code>anuluj</code>.</p>
+
+                <h4 class="mt-4 text-dark fw-semibold">❤️ Pamięć i Nastroje</h4>
+                <ul class="mb-0">
+                    <li class="mb-2">Bot posiada wbudowany licznik nastroju <strong>(od -5 do 5)</strong>. Chwalenie go podnosi jego humor, a obrażanie sprawia, że staje się złośliwy.</li>
+                    <li>Pamięta Twoje imię! Jeśli napiszesz mu <code>Nazywam się Tomek</code>, bot zapamięta to do końca sesji. Możesz go potem zapytać: <code>Jak mam na imię?</code>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="text-primary border-bottom pb-2 mb-4">⚙️ Komendy Systemowe</h2>
+                <p>Bot reaguje na specjalne komendy zaczynające się od wykrzyknika (<code>!</code>). Używaj ich, aby zarządzać jego zachowaniem.</p>
+                
+                <div class="table-responsive mt-4">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="text-primary" style="width: 35%;">Komenda</th>
+                                <th scope="col" class="text-primary">Działanie</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>!ucz &lt;pytanie&gt; | &lt;odpowiedz&gt;</code></td>
+                                <td>Ręcznie dodaje nową odpowiedź do bazy wiedzy. <br><small class="text-muted">Przykład: <code>!ucz co tam? | A wszystko dobrze!</code></small></td>
+                            </tr>
+                            <tr>
+                                <td><code>!źle</code></td>
+                                <td>Użyj tej komendy natychmiast, gdy bot powie coś głupiego. Bot usunie swoją ostatnią odpowiedź z bazy danych!</td>
+                            </tr>
+                            <tr>
+                                <td><code>!osobowość &lt;typ&gt;</code></td>
+                                <td>Zmienia charakter bota. Dostępne typy to: <code>neutralny</code>, <code>optymista</code> (łatwiej go zadowolić), <code>mruk</code> (wszystko go denerwuje).</td>
+                            </tr>
+                            <tr>
+                                <td><code>!stats</code></td>
+                                <td>Wyświetla obecne statystyki bota: jego aktualny nastrój, wybraną osobowość oraz liczbę słów w bazie.</td>
+                            </tr>
+                            <tr>
+                                <td><code>!reset</code></td>
+                                <td>Czyści krótkotrwałą pamięć bota, usuwa historię konwersacji z sesji i resetuje jego emocje do zera.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="text-primary border-bottom pb-2 mb-4">🛠️ Funkcje i Umiejętności</h2>
+                <p class="mb-4">Oprócz zwykłej rozmowy, NotCleverBot posiada zintegrowane systemy API. Zapytaj go o poniższe rzeczy w sposób naturalny:</p>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <h5 class="text-dark fw-semibold">🌤️ Pogoda</h5>
+                        <p class="text-muted">Napisz np. <code>Jaka jest pogoda w Warszawie?</code> Bot użyje radarów satelitarnych, aby podać Ci aktualną temperaturę.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-dark fw-semibold">📚 Wikipedia</h5>
+                        <p class="text-muted">Użyj słów kluczowych: <em>kto to jest, co to jest, wyjaśnij...</em> <br>Przykład: <code>Wyjaśnij czarna dziura</code>.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-dark fw-semibold">🧮 Kalkulator</h5>
+                        <p class="text-muted">Wyślij równanie matematyczne, a on natychmiast je rozwiąże.<br>Przykład: <code>sqrt(16) + sin(90)</code>.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-dark fw-semibold">🎲 Rzut monetą</h5>
+                        <p class="text-muted">Napisz <code>Rzuć monetą</code>. Uwaga: Jeśli bot jest wściekły, może oszukiwać i ukraść Ci monetę!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/footer.html', {  }); %>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

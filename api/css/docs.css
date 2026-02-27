@@ -1,0 +1,18 @@
+body {
+    background-color: #f0f8ff;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+}
+.container-custom {
+    max-width: 900px;
+}
+.card {
+    border-radius: 15px;
+}
+code {
+    background-color: #e9ecef;
+    color: #d63384;
+    padding: 0.2rem 0.4rem;
+    border-radius: 5px;
+    font-weight: 600;
+}

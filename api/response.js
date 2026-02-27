@@ -1,5 +1,5 @@
 "use strict";
-const { solver } = require("../neurons/mainFunctions.js");
+const { solver } = require("../brain/mainFunctions.js");
 
 module.exports = (app, db, conn, rethinkdb) => {
     app.get("/", async (req, res) => {

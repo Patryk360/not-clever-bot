@@ -48,6 +48,7 @@ module.exports = (app, express, http, path, conn, rethinkdb) => {
     app.use("/dashboard/login", require("../api/dashboard/login.js")(express.Router(), db, conn, rethinkdb));
 
     app.use("/features", require("../api/dashboard/features.js")(express.Router(), db, conn, rethinkdb));
+    app.use("/docs", require("../api/dashboard/docs.js")(express.Router(), db, conn, rethinkdb));
 
     app.use("/images", express.static(path.join(__dirname, "../resources/images")));
     app.use("/bootstrap/css", express.static(path.join(__dirname, "../resources/bootstrap-5.3.1-dist/css")));
