@@ -14,7 +14,7 @@ module.exports = {
         let session = await getSession(apiKey, db, conn, rethinkdb);
         let rawAnswer = null;
 
-        rawAnswer = await handleCommands(text, originalText, session, db, conn, rethinkdb);
+        rawAnswer = await handleCommands(rawText, originalText, session, db, conn, rethinkdb);
         
         if (!rawAnswer) rawAnswer = handleMemory(rawText, session);
         
@@ -35,7 +35,7 @@ module.exports = {
             session.last_matched = ""; 
         }
 
-        const finalResponse = applyModifiers(text, rawAnswer, session);
+        const finalResponse = applyModifiers(rawText, rawAnswer, session);
         await updateSession(session, originalText, finalResponse, conn, rethinkdb);
 
         return finalResponse;
